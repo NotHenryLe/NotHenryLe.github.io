@@ -1,819 +1,622 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hoang Le — Computer Engineering</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hoang Le — IoT &amp; Embedded Systems</title>
+<meta name="description" content="Hoang Le — Computer Engineering student at HCMUT, growing into IoT and embedded systems engineering one layer at a time.">
+<meta property="og:title" content="Hoang Le — IoT &amp; Embedded Systems">
+<meta property="og:description" content="Computer Engineering student at HCMUT, growing into IoT and embedded systems engineering one layer at a time.">
+<meta property="og:type" content="profile">
+<meta name="theme-color" content="#f7f4ee">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%231c1a17'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Arial,sans-serif' font-weight='700' font-size='26' fill='%23f7f4ee'%3EHL%3C/text%3E%3Ccircle cx='50' cy='48' r='4' fill='%23e0782f'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
 <style>
   :root {
-    --bg: #0a0e17;
-    --surface: #111827;
-    --surface-2: #1a2234;
-    --border: #1e293b;
-    --accent: #22d3ee;
-    --accent-dim: rgba(34,211,238,0.12);
-    --accent-glow: rgba(34,211,238,0.25);
-    --green: #34d399;
-    --green-dim: rgba(52,211,153,0.12);
-    --amber: #fbbf24;
-    --amber-dim: rgba(251,191,36,0.12);
-    --rose: #fb7185;
-    --rose-dim: rgba(251,113,133,0.12);
-    --text: #e2e8f0;
-    --text-dim: #94a3b8;
-    --text-muted: #64748b;
-    --font-body: 'Outfit', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --paper: #f7f4ee;
+    --paper-2: #efe9df;
+    --ink: #1c1a17;
+    --ink-2: #48433b;
+    --muted: #7b7468;
+    --rule: #ddd5c7;
+    --accent: #b0421d;
+    --accent-2: #e0782f;
+    --accent-soft: rgba(176, 66, 29, 0.08);
+    /* Contact band stays dark in both themes */
+    --night: #12110f;
+    --night-2: #1b1916;
+    --night-line: rgba(255, 255, 255, 0.08);
+    --night-line-2: rgba(255, 255, 255, 0.14);
+    --night-text: #efebe4;
+    --night-dim: #a9a296;
+    --night-mute: #6f685d;
+    --glow: #ff8a3d;
+    --display: 'Space Grotesk', system-ui, sans-serif;
+    --sans: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+    --gutter: clamp(16px, 4.5vw, 56px);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #151412; --paper-2: #1e1c19; --ink: #f1ece3; --ink-2: #cbc4b8;
+      --muted: #91897c; --rule: #35312b; --accent: #ee8a5e; --accent-2: #ffb070; --accent-soft: rgba(238, 138, 94, 0.1);
+      --night: #0d0c0b; --night-2: #181714;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #151412; --paper-2: #1e1c19; --ink: #f1ece3; --ink-2: #cbc4b8;
+    --muted: #91897c; --rule: #35312b; --accent: #ee8a5e; --accent-2: #ffb070; --accent-soft: rgba(238, 138, 94, 0.1);
+    --night: #0d0c0b; --night-2: #181714;
+    color-scheme: dark;
   }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  html { scroll-behavior: smooth; }
-
+  *, *::before, *::after { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 88px; -webkit-text-size-adjust: 100%; }
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--font-body);
-    line-height: 1.7;
-    overflow-x: hidden;
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 16px/1.65 var(--sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    transition: background-color .3s ease, color .3s ease;
   }
+  a { color: inherit; }
+  ::selection { background: var(--accent); color: var(--paper); }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+  .wrap { max-width: 1200px; margin: 0 auto; padding-inline: var(--gutter); }
+  .label { font: 400 .72rem/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 
-  /* ── Grain overlay ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 9999;
+  /* ── Header ── */
+  .top {
+    position: sticky; top: 0; z-index: 10;
+    background: color-mix(in srgb, var(--paper) 82%, transparent);
+    backdrop-filter: saturate(1.4) blur(14px);
+    -webkit-backdrop-filter: saturate(1.4) blur(14px);
+    border-bottom: 1px solid transparent;
+    transition: border-color .3s ease;
   }
+  .top.scrolled { border-bottom-color: var(--rule); }
+  .top .wrap { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 24px; }
+  .mark { font: 600 1.1rem/1 var(--display); text-decoration: none; letter-spacing: -0.02em; }
+  .mark span { color: var(--accent); }
+  .nav { display: flex; align-items: center; gap: 26px; }
+  .nav a { text-decoration: none; font-size: .9rem; color: var(--ink-2); transition: color .2s; }
+  .nav a:hover { color: var(--accent); }
+  .tools { display: flex; align-items: center; gap: 10px; }
+  .icon-btn {
+    width: 38px; height: 38px; display: grid; place-items: center;
+    border: 1px solid var(--rule); border-radius: 999px; background: transparent; color: var(--ink);
+    cursor: pointer; transition: border-color .2s, color .2s;
+  }
+  .icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .icon-btn svg { width: 17px; height: 17px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px; height: 38px; padding: 0 16px;
+    border-radius: 999px; background: var(--ink); color: var(--paper);
+    font-size: .86rem; font-weight: 500; text-decoration: none; transition: background .2s, transform .2s;
+  }
+  .pill:hover { background: var(--accent); transform: translateY(-1px); }
+  .pill svg { width: 15px; height: 15px; }
 
-  /* ── Background glow blobs ── */
-  .glow-wrap {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-    z-index: 0;
+  /* ── Buttons (from the Signal design) ── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 9px; height: 46px; padding: 0 20px; border-radius: 12px;
+    font: 500 .9rem/1 var(--sans); text-decoration: none; border: 1px solid var(--rule); color: var(--ink);
+    background: transparent; cursor: pointer; white-space: nowrap;
+    transition: border-color .2s, background .2s, transform .2s, box-shadow .2s, color .2s;
   }
-  .glow {
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.15;
-  }
-  .glow-1 { width: 600px; height: 600px; background: var(--accent); top: -120px; left: -100px; }
-  .glow-2 { width: 500px; height: 500px; background: #8b5cf6; bottom: 10%; right: -80px; }
-  .glow-3 { width: 400px; height: 400px; background: var(--green); bottom: -80px; left: 30%; }
-
-  /* ── Layout ── */
-  .container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  /* ── Nav ── */
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    background: rgba(10,14,23,0.75);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
-  }
-  nav .container {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 64px;
-  }
-  .nav-logo {
-    font-family: var(--font-mono);
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--accent);
-    letter-spacing: -0.5px;
-  }
-  .nav-logo span { color: var(--text-muted); }
-  .nav-links { display: flex; gap: 2rem; }
-  .nav-links a {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 0.88rem;
-    font-weight: 500;
-    transition: color 0.2s;
-    letter-spacing: 0.3px;
-  }
-  .nav-links a:hover { color: var(--accent); }
+  .btn svg { width: 16px; height: 16px; flex: none; }
+  .btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-1px); }
+  .btn-primary { background: linear-gradient(100deg, var(--accent), var(--accent-2)); color: #fff; border-color: transparent; font-weight: 600; }
+  .btn-primary:hover { color: #fff; box-shadow: 0 12px 34px -12px var(--accent-2); }
 
   /* ── Hero ── */
-  .hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding-top: 64px;
+  .hero { padding: clamp(56px, 10vw, 120px) 0 clamp(48px, 7vw, 88px); }
+  .overline { display: flex; flex-wrap: wrap; gap: 6px 16px; margin: 0 0 28px; }
+  .overline span + span::before { content: '/'; margin-right: 16px; color: var(--rule); }
+  .name {
+    margin: 0;
+    font: 600 clamp(4.2rem, 15vw, 12rem)/.86 var(--display);
+    letter-spacing: -0.055em;
   }
-  .hero-inner {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 4rem;
-    align-items: center;
-    width: 100%;
+  .name span { background: linear-gradient(100deg, var(--accent) 10%, var(--accent-2) 90%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .hero-grid {
+    display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 96px);
+    margin-top: clamp(36px, 5vw, 64px); align-items: end;
   }
-  .hero-tag {
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    color: var(--accent);
-    background: var(--accent-dim);
-    display: inline-block;
-    padding: 0.35rem 0.9rem;
-    border-radius: 999px;
-    border: 1px solid rgba(34,211,238,0.2);
-    margin-bottom: 1.2rem;
-    animation: fadeIn 0.6s ease-out 0.2s both;
+  .lede {
+    margin: 0; max-width: 30ch;
+    font: 400 clamp(1.4rem, 2.5vw, 2rem)/1.28 var(--display);
+    letter-spacing: -0.02em; color: var(--ink);
   }
-  .hero h1 {
-    font-size: clamp(2.8rem, 6vw, 4.5rem);
-    font-weight: 800;
-    line-height: 1.08;
-    letter-spacing: -2px;
-    margin-bottom: 1rem;
-    animation: fadeIn 0.6s ease-out 0.35s both;
-  }
-  .hero h1 .accent { color: var(--accent); }
-  .hero-sub {
-    font-size: 1.15rem;
-    color: var(--text-dim);
-    max-width: 520px;
-    line-height: 1.8;
-    animation: fadeIn 0.6s ease-out 0.5s both;
-  }
-  .hero-contact {
-    display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
-    animation: fadeIn 0.6s ease-out 0.65s both;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.7rem 1.5rem;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.25s;
-    cursor: pointer;
-    border: none;
-    font-family: var(--font-body);
-  }
-  .btn-primary {
-    background: var(--accent);
-    color: var(--bg);
-  }
-  .btn-primary:hover {
-    box-shadow: 0 0 30px var(--accent-glow);
-    transform: translateY(-2px);
-  }
-  .btn-ghost {
-    background: transparent;
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
-  .btn-ghost:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-  }
+  .lede em { font-style: normal; color: var(--accent); }
+  .contact-list { margin: 0; display: grid; gap: 14px; }
+  .contact-list div { display: grid; grid-template-columns: 90px 1fr; gap: 12px; align-items: baseline; padding-bottom: 14px; border-bottom: 1px solid var(--rule); }
+  .contact-list dd { margin: 0; font-size: .98rem; overflow-wrap: anywhere; }
+  .contact-list a { text-decoration: none; background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0 1px no-repeat; transition: background-size .3s ease, color .2s; }
+  .contact-list a:hover { color: var(--accent); background-size: 100% 1px; }
+  .hero-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
 
-  /* Hero right — terminal card */
-  .terminal-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    width: 340px;
-    overflow: hidden;
-    animation: fadeIn 0.6s ease-out 0.5s both;
+  .focus {
+    list-style: none; margin: clamp(56px, 8vw, 104px) 0 0; padding: 0;
+    display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+    border-top: 1px solid var(--ink);
   }
-  .terminal-bar {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 12px 16px;
-    background: var(--surface-2);
-    border-bottom: 1px solid var(--border);
-  }
-  .terminal-dot { width: 10px; height: 10px; border-radius: 50%; }
-  .terminal-dot.r { background: #ef4444; }
-  .terminal-dot.y { background: #eab308; }
-  .terminal-dot.g { background: #22c55e; }
-  .terminal-body {
-    padding: 1.2rem 1.4rem;
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    line-height: 1.9;
-    color: var(--text-dim);
-  }
-  .terminal-body .key { color: var(--accent); }
-  .terminal-body .val { color: var(--text); }
-  .terminal-body .str { color: var(--green); }
-  .terminal-body .comment { color: var(--text-muted); }
+  .focus li { padding: 22px 24px 0 0; }
+  .focus li + li { padding-left: 24px; border-left: 1px solid var(--rule); }
+  .focus .idx { display: block; font: 500 .74rem/1 var(--mono); color: var(--accent); letter-spacing: .06em; }
+  .focus b { display: block; margin-top: 14px; font: 600 clamp(1.25rem, 2vw, 1.55rem)/1.15 var(--display); letter-spacing: -0.025em; }
+  .focus span:last-child { display: block; margin-top: 10px; font-size: .86rem; line-height: 1.5; color: var(--ink-2); max-width: 30ch; }
 
   /* ── Sections ── */
-  section {
-    padding: 5rem 0;
-  }
-  .section-label {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent);
-    margin-bottom: 0.6rem;
-  }
-  .section-title {
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: -1px;
-    margin-bottom: 2.5rem;
-  }
+  .section { padding: clamp(56px, 8vw, 104px) 0; border-top: 1px solid var(--rule); }
+  .section-head { display: flex; align-items: baseline; gap: 18px; margin-bottom: clamp(32px, 5vw, 56px); }
+  .section-head .num { font: 500 .8rem/1 var(--mono); color: var(--accent); min-width: 28px; letter-spacing: .04em; }
+  .section-head h2 { margin: 0; font: 600 clamp(2.1rem, 4.6vw, 3.4rem)/1 var(--display); letter-spacing: -0.04em; }
 
-  /* ── Experience Timeline ── */
-  .timeline { position: relative; }
-  .timeline::before {
-    content: '';
-    position: absolute;
-    left: 16px;
-    top: 8px;
-    bottom: 8px;
-    width: 2px;
-    background: linear-gradient(to bottom, var(--accent), var(--green), transparent);
-    border-radius: 2px;
-  }
-  .tl-item {
-    position: relative;
-    padding-left: 52px;
-    padding-bottom: 3rem;
-  }
-  .tl-item:last-child { padding-bottom: 0; }
-  .tl-dot {
-    position: absolute;
-    left: 9px;
-    top: 6px;
-    width: 16px;
-    height: 16px;
-    border-radius: 50%;
-    background: var(--bg);
-    border: 2.5px solid var(--accent);
-    z-index: 2;
-  }
-  .tl-item:nth-child(2) .tl-dot { border-color: var(--green); }
-  .tl-item:nth-child(3) .tl-dot { border-color: var(--amber); }
-  .tl-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    margin-bottom: 0.4rem;
-  }
-  .tl-title {
-    font-size: 1.15rem;
-    font-weight: 700;
-  }
-  .tl-date {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--text-muted);
-  }
-  .tl-subtitle {
-    font-size: 0.88rem;
-    color: var(--accent);
-    margin-bottom: 0.3rem;
-  }
-  .tl-location {
-    font-size: 0.82rem;
-    color: var(--text-muted);
-    margin-bottom: 0.8rem;
-  }
-  .tl-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-bottom: 1rem;
-  }
-  .tl-tag {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    padding: 0.25rem 0.65rem;
-    border-radius: 6px;
-    background: var(--accent-dim);
-    color: var(--accent);
-    border: 1px solid rgba(34,211,238,0.15);
-  }
-  .tl-tag.green { background: var(--green-dim); color: var(--green); border-color: rgba(52,211,153,0.15); }
-  .tl-tag.amber { background: var(--amber-dim); color: var(--amber); border-color: rgba(251,191,36,0.15); }
-  .tl-bullets {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-  .tl-bullets li {
-    position: relative;
-    padding-left: 1.2rem;
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    line-height: 1.7;
-  }
-  .tl-bullets li::before {
-    content: '›';
-    position: absolute;
-    left: 0;
-    color: var(--accent);
-    font-weight: 700;
-  }
+  /* About + growth path */
+  .about { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: clamp(28px, 6vw, 96px); align-items: start; }
+  .statement { margin: 0; font: 500 clamp(1.7rem, 3.4vw, 2.6rem)/1.15 var(--display); letter-spacing: -0.035em; }
+  .statement em { font-style: normal; color: var(--accent); }
+  .about-body p { margin: 0; color: var(--ink-2); font-size: 1.04rem; }
+  .about-body p + p { margin-top: 16px; }
+  .about-body strong { color: var(--ink); font-weight: 600; }
 
-  /* ── Education ── */
-  .edu-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 2rem 2.5rem;
-    position: relative;
-    overflow: hidden;
-  }
-  .edu-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent), var(--green), #8b5cf6);
-  }
-  .edu-degree {
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 0.3rem;
-  }
-  .edu-school {
-    color: var(--accent);
-    font-size: 1rem;
-    font-weight: 500;
-    margin-bottom: 0.3rem;
-  }
-  .edu-meta {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    margin-bottom: 1.2rem;
-  }
-  .edu-label {
-    font-size: 0.82rem;
-    font-weight: 600;
-    color: var(--text-dim);
-    margin-bottom: 0.6rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .coursework-grid {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-  .cw-tag {
-    font-size: 0.78rem;
-    padding: 0.3rem 0.7rem;
-    border-radius: 6px;
-    background: var(--surface-2);
-    color: var(--text-dim);
-    border: 1px solid var(--border);
-  }
+  .path { list-style: none; margin: clamp(48px, 7vw, 80px) 0 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; position: relative; }
+  .path::before { content: ''; position: absolute; left: 6px; right: 0; top: 6px; height: 2px; background: linear-gradient(90deg, var(--accent), var(--accent-2) 75%, transparent); opacity: .5; }
+  .path li { position: relative; padding-top: 30px; }
+  .path li::before { content: ''; position: absolute; left: 0; top: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--paper); border: 2px solid var(--accent); }
+  .path li.next::before { border-style: dashed; border-color: var(--accent-2); }
+  .path time { font: 500 .72rem/1 var(--mono); color: var(--accent); letter-spacing: .06em; text-transform: uppercase; }
+  .path b { display: block; margin-top: 10px; font: 600 1.1rem/1.2 var(--display); letter-spacing: -0.02em; }
+  .path span { display: block; margin-top: 6px; font-size: .86rem; line-height: 1.5; color: var(--ink-2); }
 
-  /* ── Skills ── */
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.2rem;
+  /* Entries */
+  .entry {
+    display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: clamp(20px, 4vw, 64px);
+    padding: 36px 0; border-top: 1px solid var(--rule);
   }
-  .skill-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem 1.8rem;
-    transition: all 0.3s;
-  }
-  .skill-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-3px);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-  }
-  .skill-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    font-weight: 700;
-    font-family: var(--font-mono);
-  }
-  .skill-icon.cyan { background: var(--accent-dim); color: var(--accent); }
-  .skill-icon.green { background: var(--green-dim); color: var(--green); }
-  .skill-icon.amber { background: var(--amber-dim); color: var(--amber); }
-  .skill-icon.rose { background: var(--rose-dim); color: var(--rose); }
-  .skill-card h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 0.8rem;
-  }
-  .skill-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
-  }
-  .skill-pill {
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    padding: 0.25rem 0.6rem;
-    border-radius: 5px;
-    background: var(--surface-2);
-    color: var(--text-dim);
-    border: 1px solid var(--border);
-    transition: all 0.2s;
-  }
-  .skill-card:hover .skill-pill {
-    border-color: rgba(34,211,238,0.2);
-    color: var(--text);
-  }
+  .entry:first-of-type { border-top: 0; padding-top: 0; }
+  .meta { display: flex; flex-direction: column; gap: 4px; padding-top: 6px; font: 400 .78rem/1.5 var(--mono); color: var(--muted); }
+  .meta .date { color: var(--ink); font-weight: 500; }
+  .entry h3, .project h3 { margin: 0; font: 600 clamp(1.35rem, 2.3vw, 1.75rem)/1.15 var(--display); letter-spacing: -0.025em; }
+  .org { margin: 6px 0 0; font-size: 1rem; color: var(--accent); font-weight: 500; }
+  .stack { display: flex; flex-wrap: wrap; gap: 6px; margin: 16px 0 0; padding: 0; list-style: none; }
+  .stack li { font: 400 .72rem/1 var(--mono); padding: 6px 10px; border: 1px solid var(--rule); border-radius: 999px; color: var(--ink-2); }
+  .bullets { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; max-width: 72ch; }
+  .bullets li { position: relative; padding-left: 26px; color: var(--ink-2); }
+  .bullets li::before { content: ''; position: absolute; left: 0; top: .78em; width: 12px; height: 2px; border-radius: 2px; background: var(--accent); }
+  .bullets strong { color: var(--ink); font-weight: 600; }
+  .more { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; font: 500 .9rem/1 var(--sans); color: var(--accent); text-decoration: none; }
+  .more svg { width: 16px; height: 16px; transition: transform .25s; }
+  .more:hover svg { transform: translateY(3px); }
 
-  /* ── Activities & Interests ── */
-  .extras-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.2rem;
+  .callout {
+    margin: 24px 0 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+    background: var(--paper-2); border-radius: 6px;
   }
-  .extra-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem 1.8rem;
-  }
-  .extra-card h3 {
-    font-size: 1rem;
-    font-weight: 700;
-    margin-bottom: 0.6rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-  .extra-card p {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    line-height: 1.7;
-  }
-  .interest-items {
-    display: flex;
-    gap: 1rem;
-    margin-top: 0.4rem;
-  }
-  .interest-item {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.88rem;
-    color: var(--text-dim);
-  }
-  .interest-years {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    background: var(--surface-2);
-    padding: 0.15rem 0.45rem;
-    border-radius: 4px;
-    color: var(--text-muted);
-  }
+  .callout div { padding: 18px 20px; }
+  .callout div + div { border-left: 1px solid var(--rule); }
+  .callout b { display: block; font: 600 1.7rem/1 var(--display); letter-spacing: -0.03em; color: var(--accent); }
+  .callout span { display: block; margin-top: 8px; font-size: .78rem; color: var(--muted); line-height: 1.4; }
 
-  /* ── Footer ── */
-  footer {
-    border-top: 1px solid var(--border);
-    padding: 3rem 0;
-    text-align: center;
-  }
-  .footer-links {
-    display: flex;
-    justify-content: center;
-    gap: 2rem;
-    margin-bottom: 1.2rem;
-  }
-  .footer-links a {
-    color: var(--text-dim);
-    text-decoration: none;
-    font-size: 0.88rem;
-    transition: color 0.2s;
-  }
-  .footer-links a:hover { color: var(--accent); }
-  .footer-copy {
-    font-size: 0.78rem;
-    color: var(--text-muted);
-  }
+  .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(28px, 3.5vw, 48px) clamp(20px, 3vw, 40px); }
+  .project { border-top: 2px solid var(--ink); padding-top: 22px; }
+  .project .meta { flex-direction: row; flex-wrap: wrap; gap: 4px 14px; padding: 0 0 12px; }
+  .project .bullets { margin-top: 18px; }
+  .project.wide { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(20px, 4vw, 64px); }
+  .project.wide .bullets { margin-top: 0; }
+  .project .note { margin: 10px 0 0; color: var(--ink-2); max-width: 46ch; }
 
-  /* ── Animations ── */
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
+  .edu { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: clamp(20px, 4vw, 64px); }
+  .edu h3 { margin: 0; font: 600 clamp(1.6rem, 3.2vw, 2.4rem)/1.1 var(--display); letter-spacing: -0.035em; max-width: 24ch; }
+  .edu .degree { margin: 10px 0 0; font-size: 1.05rem; color: var(--ink-2); }
+  .courses { margin-top: 36px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; }
+  .courses h4 { margin: 0 0 12px; font-weight: 400; }
+  .courses ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; font-size: .92rem; }
+  .lab { font: 500 .64rem/1 var(--mono); color: var(--accent); margin-left: 5px; letter-spacing: .04em; }
+
+  .skills { margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 clamp(24px, 5vw, 72px); }
+  .skills div { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--rule); }
+  .skills dt { padding-top: 2px; }
+  .skills dd { margin: 0; font-size: .96rem; }
+
+  .beyond { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(24px, 4vw, 56px); }
+  .beyond h3 { margin: 0 0 14px; font-weight: 400; }
+  .beyond p { margin: 0; font: 500 1.25rem/1.35 var(--display); letter-spacing: -0.02em; }
+  .beyond p + p { margin-top: 10px; }
+  .beyond .sub { font: 400 .9rem/1.5 var(--sans); color: var(--ink-2); letter-spacing: 0; }
+
+  /* ── Contact (from the Signal design) ── */
+  .contact { position: relative; background: var(--night); color: var(--night-text); overflow: hidden; border-top: 1px solid var(--night-line); }
+  .contact::before {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(var(--night-line) 1px, transparent 1px), linear-gradient(90deg, var(--night-line) 1px, transparent 1px);
+    background-size: 56px 56px;
+    mask-image: radial-gradient(ellipse 70% 80% at 50% 0%, #000 20%, transparent 70%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 80% at 50% 0%, #000 20%, transparent 70%);
+  }
+  .contact::after { content: ''; position: absolute; left: 50%; top: 0; width: 900px; height: 520px; transform: translate(-50%, -50%); background: radial-gradient(closest-side, color-mix(in srgb, var(--glow) 24%, transparent), transparent 70%); pointer-events: none; }
+  .contact .wrap { position: relative; z-index: 1; padding-block: clamp(72px, 10vw, 136px) 36px; text-align: center; }
+  .tag { display: inline-flex; align-items: center; gap: 10px; padding: 8px 14px; border: 1px solid var(--night-line-2); border-radius: 999px; background: rgba(255,255,255,.03); font: 400 .74rem/1 var(--mono); letter-spacing: .05em; color: var(--night-dim); }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: #62e3a4; animation: ping 2.4s infinite; }
+  @keyframes ping { 0% { box-shadow: 0 0 0 0 rgba(98, 227, 164, .5); } 70%, 100% { box-shadow: 0 0 0 8px rgba(98, 227, 164, 0); } }
+  .contact h2 { margin: 22px 0 0; font: 600 clamp(2.6rem, 7.4vw, 5.6rem)/1 var(--display); letter-spacing: -0.05em; }
+  .contact h2 span { background: linear-gradient(100deg, #ffb547, var(--glow)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .contact p { margin: 18px auto 0; max-width: 52ch; color: var(--night-dim); font-size: 1.04rem; }
+  .mail { display: inline-flex; align-items: center; gap: 4px; margin-top: 34px; padding: 6px; border: 1px solid var(--night-line-2); border-radius: 14px; background: var(--night-2); max-width: 100%; }
+  .mail a { padding: 10px 14px; font: 400 clamp(.9rem, 2.6vw, 1.1rem)/1 var(--mono); text-decoration: none; overflow-wrap: anywhere; transition: color .2s; }
+  .mail a:hover { color: #ffb547; }
+  .contact .btn { height: 38px; padding: 0 14px; font-size: .82rem; border-radius: 10px; color: var(--night-text); border-color: var(--night-line-2); background: var(--night-2); }
+  .contact .btn:hover { border-color: rgba(255, 181, 71, .5); color: var(--night-text); }
+  .links { display: flex; justify-content: center; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .foot { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-top: clamp(64px, 9vw, 96px); padding-top: 24px; border-top: 1px solid var(--night-line); font: 400 .72rem/1.4 var(--mono); color: var(--night-mute); text-align: left; }
+
+  /* ── Motion ── */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); }
+  .reveal.in { opacity: 1; transform: none; }
+  .hero .name, .hero .overline, .hero-grid, .focus { animation: rise 1s cubic-bezier(.2,.7,.2,1) both; }
+  .hero .name { animation-delay: .08s; }
+  .hero-grid { animation-delay: .22s; }
+  .focus { animation-delay: .34s; }
+  @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .reveal { opacity: 1; transform: none; }
   }
 
   /* ── Responsive ── */
-  @media (max-width: 768px) {
-    .hero-inner { grid-template-columns: 1fr; gap: 2rem; }
-    .terminal-card { width: 100%; }
-    .extras-grid { grid-template-columns: 1fr; }
-    .nav-links { gap: 1rem; }
-    .nav-links a { font-size: 0.8rem; }
-    .hero-contact { flex-direction: column; }
-    .interest-items { flex-wrap: wrap; }
-    .edu-card { padding: 1.5rem; }
+  @media (max-width: 1000px) {
+    .nav { display: none; }
+    .hero-grid, .about { grid-template-columns: 1fr; align-items: start; }
+    .focus { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .focus li:nth-child(3) { padding-left: 0; border-left: 0; }
+    .focus li { padding-bottom: 24px; }
+    .path { grid-template-columns: 1fr; gap: 26px; }
+    .path::before { left: 6px; right: auto; top: 6px; bottom: 6px; width: 2px; height: auto; background: linear-gradient(180deg, var(--accent), var(--accent-2) 80%, transparent); }
+    .path li { padding: 0 0 0 34px; }
+    .path b { margin-top: 6px; }
+    .entry, .edu { grid-template-columns: 1fr; gap: 14px; }
+    .meta { flex-direction: row; flex-wrap: wrap; gap: 4px 14px; padding-top: 0; }
+    .courses { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .skills { grid-template-columns: 1fr; }
+    .projects, .beyond, .project.wide { grid-template-columns: 1fr; }
+    .project.wide .bullets { margin-top: 4px; }
+  }
+  @media (max-width: 560px) {
+    .pill span { display: none; }
+    .pill { width: 38px; padding: 0; justify-content: center; }
+    .overline { gap: 4px 10px; }
+    .overline span + span::before { margin-right: 10px; }
+    .name { font-size: clamp(3.6rem, 22vw, 6rem); }
+    .focus { grid-template-columns: 1fr; }
+    .focus li, .focus li + li { padding: 20px 0; border-left: 0; }
+    .focus li + li { border-top: 1px solid var(--rule); }
+    .callout { grid-template-columns: 1fr; }
+    .callout div + div { border-left: 0; border-top: 1px solid var(--rule); }
+    .courses { grid-template-columns: 1fr; }
+    .skills div { grid-template-columns: 1fr; gap: 6px; }
+    .contact-list div { grid-template-columns: 80px 1fr; }
+    .hero-cta .btn { flex: 1 1 auto; }
+    .mail { flex-direction: column; align-items: stretch; width: 100%; }
+    .mail .btn { width: 100%; }
+  }
+
+  /* ── Print: renders as a clean résumé ── */
+  @media print {
+    :root { --paper: #fff; --paper-2: #f4f4f4; --ink: #000; --ink-2: #222; --muted: #555; --rule: #ccc; --accent: #8a2f12; --accent-2: #8a2f12; }
+    .top, .hero-cta, .path, .more, .links, .tag, .contact::before, .contact::after, #copy { display: none !important; }
+    .hero { padding: 0 0 16px; }
+    .name { font-size: 40pt; }
+    .name span { color: var(--accent); background: none; }
+    .section { padding: 18px 0; }
+    .entry, .project { break-inside: avoid; padding: 14px 0; }
+    .reveal { opacity: 1 !important; transform: none !important; }
+    .contact { background: #fff; color: #000; border-top: 1px solid #ccc; }
+    .contact .wrap { padding: 16px 0 0; text-align: left; }
+    .contact h2 { font-size: 18pt; }
+    .contact h2 span { color: #000; background: none; }
+    .contact p, .foot { color: #333; }
+    .mail { border: 0; background: none; padding: 0; margin-top: 8px; }
   }
 </style>
 </head>
 <body>
 
-<div class="glow-wrap">
-  <div class="glow glow-1"></div>
-  <div class="glow glow-2"></div>
-  <div class="glow glow-3"></div>
-</div>
-
-<nav>
-  <div class="container">
-    <div class="nav-logo">hoang<span>.le</span></div>
-    <div class="nav-links">
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="mark" href="#">Hoang Le<span>.</span></a>
+    <nav class="nav" aria-label="Sections">
+      <a href="#about">About</a>
       <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
       <a href="#education">Education</a>
       <a href="#skills">Skills</a>
-      <a href="#more">More</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="tools">
+      <button class="icon-btn" id="theme" type="button" aria-label="Toggle dark mode">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      </button>
+      <a class="pill" href="Hoang-Le-Resume.pdf" download>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0-5-5m5 5 5-5M4 20h16"/></svg>
+        <span>Résumé PDF</span>
+      </a>
     </div>
   </div>
-</nav>
+</header>
 
-<!-- ═══════ HERO ═══════ -->
-<section class="hero">
-  <div class="container">
-    <div class="hero-inner">
-      <div>
-        <div class="hero-tag">📍 Ho Chi Minh City, Vietnam</div>
-        <h1>Hoang <span class="accent">Le</span></h1>
-        <p class="hero-sub">Computer Engineering student at HCMUT building at the intersection of embedded systems, IoT, and edge AI. Passionate about hardware-software co-design and real-time systems.</p>
-        <div class="hero-contact">
-          <a href="mailto:hoangleq765@gmail.com" class="btn btn-primary">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-            Get in Touch
+<main>
+  <section class="hero">
+    <div class="wrap">
+      <p class="overline label"><span>Computer Engineering</span><span>HCMUT</span><span>Class of 2027</span></p>
+      <h1 class="name">Hoang <span>Le.</span></h1>
+      <div class="hero-grid">
+        <p class="lede">Growing into an IoT &amp; embedded engineer <em>one layer at a time</em> — from logic gates and firmware to connected devices that sense, decide and act.</p>
+        <div>
+          <dl class="contact-list">
+            <div><dt class="label">Email</dt><dd><a href="mailto:hoangleq765@gmail.com">hoangleq765@gmail.com</a></dd></div>
+            <div><dt class="label">Based in</dt><dd>Ho Chi Minh City, Vietnam</dd></div>
+            <div><dt class="label">Focus</dt><dd>IoT &amp; embedded systems</dd></div>
+          </dl>
+          <div class="hero-cta">
+            <a class="btn btn-primary" href="#contact">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+              Get in touch
+            </a>
+            <a class="btn" href="https://github.com/NotHenryLe" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5a11.5 11.5 0 0 0-3.64 22.41c.58.1.79-.25.79-.56v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.71.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.96.1-.75.4-1.26.73-1.55-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.77 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.8 1.19 1.83 1.19 3.09 0 4.42-2.69 5.39-5.26 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 12 .5Z"/></svg>
+              GitHub
+            </a>
+          </div>
+        </div>
+      </div>
+      <ul class="focus" aria-label="Focus areas">
+        <li><span class="idx">01</span><b>Embedded firmware</b><span>C/C++ on ESP32 and STM32 — multitasking control, sensors and displays.</span></li>
+        <li><span class="idx">02</span><b>IoT systems</b><span>From sensor to dashboard over MQTT and WebSockets, in real time.</span></li>
+        <li><span class="idx">03</span><b>Digital design</b><span>Verilog HDL and Xilinx Vivado, from logic design to SoC labs.</span></li>
+        <li><span class="idx">04</span><b>Edge AI</b><span>TinyML on microcontrollers and ONNX speech models on CPU.</span></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section" id="about">
+    <div class="wrap">
+      <header class="section-head reveal"><span class="num">01</span><h2>About</h2></header>
+      <div class="about">
+        <p class="statement reveal">I learn by building — and every build takes me <em>one layer deeper.</em></p>
+        <div class="about-body reveal">
+          <p>My path into engineering has been a steady climb through the stack. Logic design and Verilog showed me how hardware thinks. Programming an ESP32 — and fitting a TinyML model onto it — taught me what it takes to make a small device genuinely useful. Building a smart home on an AIoT kit showed me how sensors, firmware, a broker and a dashboard become <strong>one working system</strong>.</p>
+          <p>At Viettel Solutions I took a project from research to hand-over and learned to turn messy real-world data into results people can trust. Now I’m focused on <strong>IoT and embedded systems</strong>: reliable firmware, connected devices and intelligence at the edge. I’m still learning every week — and that’s exactly where I want to be.</p>
+        </div>
+      </div>
+      <ol class="path reveal" aria-label="Growth path">
+        <li><time>Jan 2025</time><b>Communicate</b><span>Teaching Assistant at British Council, working in a 100% English-speaking team.</span></li>
+        <li><time>Oct 2025</time><b>Go to the edge</b><span>ESP32 firmware in C++ and a TinyML model running on the device.</span></li>
+        <li><time>Feb 2026</time><b>Connect systems</b><span>A smart home on an AIoT kit — sensing, control, security and a live dashboard.</span></li>
+        <li><time>Jun 2026</time><b>Ship in industry</b><span>Viettel Solutions internship — an end-to-end agent, handed over to the team.</span></li>
+        <li class="next"><time>Next</time><b>Go deeper</b><span>Graduating in 2027 and building further into IoT &amp; embedded systems.</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="experience">
+    <div class="wrap">
+      <header class="section-head reveal"><span class="num">02</span><h2>Experience</h2></header>
+
+      <article class="entry reveal">
+        <div class="meta"><span class="date">Jun – Aug 2026</span><span>Ho Chi Minh City</span></div>
+        <div>
+          <h3>Solution Consulting Intern</h3>
+          <p class="org">Viettel Solutions</p>
+          <ul class="bullets">
+            <li>Built an AI agent prototype that forecasts <strong>System Marginal Price (SMP)</strong> in Vietnam’s wholesale electricity market (48 half-hour cycles per day), as an independent counterpart to a commercial project for a power generation company.</li>
+            <li>Owned it end to end — market research, data pipeline, backtesting, LLM orchestration, dashboard and voice interface — and handed it over to the team head as a <strong>documented, reproducible archive</strong>.</li>
+          </ul>
+          <a class="more" href="#p-forecast">See the project
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14m-6-6 6 6 6-6"/></svg>
           </a>
-          <a href="tel:+84939961266" class="btn btn-ghost">
-            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
-            (+84) 939 961 266
-          </a>
         </div>
+      </article>
+
+      <article class="entry reveal">
+        <div class="meta"><span class="date">Jan 2025 – May 2026</span><span>Ho Chi Minh City</span></div>
+        <div>
+          <h3>Teaching Assistant</h3>
+          <p class="org">British Council</p>
+          <ul class="bullets">
+            <li>Collaborated continuously with native-speaking educators in a strict <strong>100% English-speaking</strong> professional environment to deliver high-quality ESL instruction and manage classroom dynamics.</li>
+            <li>Developed engaging supplementary teaching materials and co-facilitated lessons to enhance student comprehension and academic participation.</li>
+            <li>Authored detailed daily progress reports and personalized feedback for parents in Microsoft Word, ensuring transparent communication on student development.</li>
+          </ul>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section" id="projects">
+    <div class="wrap">
+      <header class="section-head reveal"><span class="num">03</span><h2>Projects</h2></header>
+      <div class="projects">
+        <article class="project reveal">
+          <div class="meta"><span class="date">Feb – May 2026</span><span>HCMUT</span></div>
+          <h3>Smart Home System (AIoT)</h3>
+          <ul class="stack"><li>Python</li><li>MQTT</li><li>JavaScript</li><li>HTML/CSS</li><li>Chart.js</li></ul>
+          <ul class="bullets">
+            <li>Engineered an IoT-based smart home system on an AIoT kit to automate and monitor residential environments.</li>
+            <li>Developed Python sensor interfaces for real-time temperature, humidity and air-quality monitoring, with automated fan-speed control by ambient temperature and lighting control.</li>
+            <li>Designed a security module with abnormal motion detection, fire alarm triggers and a PIN-based digital door lock.</li>
+            <li>Built a web dashboard for real-time power-consumption estimation, connected over <strong>MQTT via WebSockets</strong> to an Eclipse Mosquitto broker for low-latency remote control.</li>
+          </ul>
+        </article>
+
+        <article class="project reveal">
+          <div class="meta"><span class="date">Oct – Dec 2025</span><span>Ho Chi Minh City</span></div>
+          <h3>ESP32 IoT &amp; Edge AI Applications</h3>
+          <ul class="stack"><li>C++</li><li>ESP32</li><li>TinyML</li></ul>
+          <ul class="bullets">
+            <li>Programmed an ESP32 in C++ for multi-tasking control of an LED and humidity-responsive NeoPixels, with temperature/humidity sensing shown on an LCD.</li>
+            <li>Configured the ESP32 in <strong>Access Point mode</strong>, hosting a local web server for direct user interaction and device control.</li>
+            <li>Deployed a <strong>TinyML</strong> model onto the edge device and ran rigorous performance and accuracy evaluations of on-device machine learning.</li>
+          </ul>
+        </article>
+
+        <article class="project wide reveal" id="p-forecast">
+          <div>
+            <div class="meta"><span class="date">Jun – Aug 2026</span><span>Viettel Solutions · internship</span></div>
+            <h3>Electricity Price Forecasting Agent</h3>
+            <p class="note">An AI agent that forecasts the System Marginal Price across Vietnam’s wholesale electricity market, 48 half-hour cycles a day.</p>
+            <ul class="stack"><li>Python</li><li>statsmodels</li><li>PostgreSQL / TimescaleDB</li><li>FastAPI</li><li>Gemini API</li><li>ONNX</li></ul>
+            <div class="callout">
+              <div><b>6.9%</b><span>WAPE at the next cycle</span></div>
+              <div><b>95k+</b><span>half-hourly cycles ingested</span></div>
+              <div><b>0.04s</b><span>on-CPU voice transcription</span></div>
+            </div>
+          </div>
+          <ul class="bullets">
+            <li>Researched SMP formation (merit-order dispatch, price cap, wet/dry hydro regimes, solar duck curve), evaluated exogenous drivers and prioritized them by modeling value, and built a dual-write ingestion pipeline on PostgreSQL/TimescaleDB holding <strong>95,000+ half-hourly cycles</strong> (2021–2026).</li>
+            <li>Designed a zero-robust rolling-origin backtest (WAPE, 120 target days across 2021–2026) comparing SARIMAX harmonic regression, persistence baselines and an LSTM; built a multi-horizon forecast router reaching <strong>6.9% WAPE</strong> at the next cycle and ~24% at day-ahead (2026 regime), and showed via error decomposition (81% shape-driven) that level-correction approaches cannot close the day-ahead gap.</li>
+            <li>Engineered a bilingual (Vietnamese/English) LLM orchestration layer with Gemini tool-calling: the model only routes and narrates while <strong>deterministic Python computes every number</strong>, backed by per-forecast provenance records and an offline fallback.</li>
+            <li>Delivered a FastAPI dashboard and chat console (48-cycle SMP curve with P10–P90 uncertainty band) and a local wake-word Vietnamese voice interface (Silero VAD, sherpa-onnx; <strong>~0.04 s</strong> CPU transcription).</li>
+          </ul>
+        </article>
       </div>
-      <div class="terminal-card">
-        <div class="terminal-bar">
-          <div class="terminal-dot r"></div>
-          <div class="terminal-dot y"></div>
-          <div class="terminal-dot g"></div>
-        </div>
-        <div class="terminal-body">
-          <span class="comment">// hoang.config.json</span><br>
-          {<br>
-          &nbsp;&nbsp;<span class="key">"name"</span>: <span class="str">"Hoang Le"</span>,<br>
-          &nbsp;&nbsp;<span class="key">"role"</span>: <span class="str">"CE Student"</span>,<br>
-          &nbsp;&nbsp;<span class="key">"school"</span>: <span class="str">"HCMUT"</span>,<br>
-          &nbsp;&nbsp;<span class="key">"langs"</span>: [<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"C/C++"</span>,<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Python"</span>,<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Verilog HDL"</span><br>
-          &nbsp;&nbsp;],<br>
-          &nbsp;&nbsp;<span class="key">"focus"</span>: [<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"IoT"</span>,<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Embedded"</span>,<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;<span class="str">"Edge AI"</span><br>
-          &nbsp;&nbsp;]<br>
-          }
+    </div>
+  </section>
+
+  <section class="section" id="education">
+    <div class="wrap">
+      <header class="section-head reveal"><span class="num">04</span><h2>Education</h2></header>
+      <div class="edu reveal">
+        <div class="meta"><span class="date">Expected 2027</span><span>Ho Chi Minh City</span></div>
+        <div>
+          <h3>Ho Chi Minh City University of Technology</h3>
+          <p class="degree">Bachelor of Engineering in Computer Engineering</p>
+          <div class="courses">
+            <div>
+              <h4 class="label">Digital Logic &amp; VLSI</h4>
+              <ul><li>Digital Systems</li><li>Logic Design with HDL<span class="lab">+LAB</span></li><li>LSI Logic Design<span class="lab">+LAB</span></li><li>Introduction to SoC<span class="lab">+LAB</span></li></ul>
+            </div>
+            <div>
+              <h4 class="label">Embedded &amp; Architecture</h4>
+              <ul><li>Microprocessors – Microcontrollers<span class="lab">+LAB</span></li><li>Computer Architecture<span class="lab">+LAB</span></li></ul>
+            </div>
+            <div>
+              <h4 class="label">Electronics</h4>
+              <ul><li>Electrical &amp; Electronic Circuits<span class="lab">+LAB</span></li></ul>
+            </div>
+            <div>
+              <h4 class="label">Computer Science</h4>
+              <ul><li>Data Structures &amp; Algorithms</li><li>Mathematical Modeling</li></ul>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══════ EXPERIENCE ═══════ -->
-<section id="experience">
-  <div class="container">
-    <div class="section-label">// experience</div>
-    <h2 class="section-title">Where I've Built Things</h2>
-
-    <div class="timeline">
-      <!-- 1 -->
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-header">
-          <span class="tl-title">Smart Home System (AIoT)</span>
-          <span class="tl-date">Feb 2026 – Present</span>
-        </div>
-        <div class="tl-subtitle">HCMUT — IoT Project</div>
-        <div class="tl-location">Ho Chi Minh City, Vietnam</div>
-        <div class="tl-tags">
-          <span class="tl-tag">Python</span>
-          <span class="tl-tag">MQTT</span>
-          <span class="tl-tag">JavaScript</span>
-          <span class="tl-tag">HTML/CSS</span>
-          <span class="tl-tag">Chart.js</span>
-        </div>
-        <ul class="tl-bullets">
-          <li>Engineered a full IoT Smart Home system with real-time environmental monitoring — temperature, humidity, and air quality</li>
-          <li>Built automated control algorithms for dynamic fan speed adjustment and lighting management</li>
-          <li>Designed a security module with motion detection, fire alarms, and PIN-based digital door lock</li>
-          <li>Created a responsive web dashboard with Chart.js for live power consumption visualization</li>
-          <li>Established device-to-cloud communication via MQTT over WebSockets on an Eclipse Mosquitto broker</li>
-        </ul>
-      </div>
-
-      <!-- 2 -->
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-header">
-          <span class="tl-title">ESP32 IoT & Edge AI Applications</span>
-          <span class="tl-date">Oct 2025 – Dec 2025</span>
-        </div>
-        <div class="tl-subtitle">Embedded Systems Project</div>
-        <div class="tl-location">Ho Chi Minh City, Vietnam</div>
-        <div class="tl-tags">
-          <span class="tl-tag green">C++</span>
-          <span class="tl-tag green">ESP32</span>
-          <span class="tl-tag green">TinyML</span>
-        </div>
-        <ul class="tl-bullets">
-          <li>Programmed ESP32 for multi-tasking — conditional LED blinking and NeoPixel control based on humidity</li>
-          <li>Interfaced temp/humidity sensors with LCD for real-time local data visualization</li>
-          <li>Configured ESP32 in AP mode hosting a web server for direct device control</li>
-          <li>Deployed a TinyML model on-device and benchmarked its performance for embedded ML</li>
-        </ul>
-      </div>
-
-      <!-- 3 -->
-      <div class="tl-item">
-        <div class="tl-dot"></div>
-        <div class="tl-header">
-          <span class="tl-title">Teaching Assistant — British Council</span>
-          <span class="tl-date">Jan 2025 – May 2026</span>
-        </div>
-        <div class="tl-subtitle">British Council</div>
-        <div class="tl-location">Ho Chi Minh City, Vietnam</div>
-        <div class="tl-tags">
-          <span class="tl-tag amber">English (IELTS 7.0)</span>
-          <span class="tl-tag amber">MS Word</span>
-          <span class="tl-tag amber">MS Excel</span>
-        </div>
-        <ul class="tl-bullets">
-          <li>Collaborated with native-speaking educators in a 100% English-speaking environment for ESL instruction</li>
-          <li>Developed supplementary teaching materials and co-facilitated lessons</li>
-          <li>Completed compliance training in Information Security, Anti-Money Laundering, and Anti-Bribery</li>
-          <li>Authored daily student progress reports and tracked attendance/performance metrics</li>
-        </ul>
-      </div>
+  <section class="section" id="skills">
+    <div class="wrap">
+      <header class="section-head reveal"><span class="num">05</span><h2>Skills</h2></header>
+      <dl class="skills reveal">
+        <div><dt class="label">Languages</dt><dd>C/C++, Python, Verilog HDL</dd></div>
+        <div><dt class="label">Hardware</dt><dd>ESP32, AIoT kits</dd></div>
+        <div><dt class="label">IoT &amp; Web</dt><dd>MQTT, WebSockets, HTML/CSS/JavaScript, Chart.js</dd></div>
+        <div><dt class="label">Tools</dt><dd>STM32CubeIDE, Xilinx Vivado, Proteus, MobaXterm, VMware</dd></div>
+        <div><dt class="label">Data &amp; AI</dt><dd>Time-series forecasting (SARIMAX, rolling-origin backtesting), Pandas, NumPy, statsmodels, LLM tool-calling (Gemini API), ONNX speech processing</dd></div>
+        <div><dt class="label">Backend &amp; Data</dt><dd>FastAPI, PostgreSQL / TimescaleDB</dd></div>
+        <div><dt class="label">Systems</dt><dd>Linux (Ubuntu), Windows</dd></div>
+      </dl>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- ═══════ EDUCATION ═══════ -->
-<section id="education">
-  <div class="container">
-    <div class="section-label">// education</div>
-    <h2 class="section-title">Academic Foundation</h2>
-
-    <div class="edu-card">
-      <div class="edu-degree">B.Eng. in Computer Engineering</div>
-      <div class="edu-school">Ho Chi Minh City University of Technology (HCMUT)</div>
-      <div class="edu-meta">Expected Graduation: 2027 · Ho Chi Minh City, Vietnam</div>
-
-      <div class="edu-label">Relevant Coursework</div>
-      <div class="coursework-grid">
-        <span class="cw-tag">Digital Systems</span>
-        <span class="cw-tag">Logic Design with HDL</span>
-        <span class="cw-tag">LSI Logic Design</span>
-        <span class="cw-tag">Intro to SoC</span>
-        <span class="cw-tag">Microprocessors & MCUs</span>
-        <span class="cw-tag">Computer Architecture</span>
-        <span class="cw-tag">Electrical & Electronic Circuits</span>
-        <span class="cw-tag">Data Structures & Algorithms</span>
-        <span class="cw-tag">Mathematical Modeling</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════ SKILLS ═══════ -->
-<section id="skills">
-  <div class="container">
-    <div class="section-label">// skills</div>
-    <h2 class="section-title">Technical Arsenal</h2>
-
-    <div class="skills-grid">
-      <div class="skill-card">
-        <div class="skill-icon cyan">&lt;/&gt;</div>
-        <h3>Programming Languages</h3>
-        <div class="skill-list">
-          <span class="skill-pill">C</span>
-          <span class="skill-pill">C++</span>
-          <span class="skill-pill">Python</span>
-          <span class="skill-pill">Verilog HDL</span>
+  <section class="section" id="beyond">
+    <div class="wrap">
+      <header class="section-head reveal"><span class="num">06</span><h2>Beyond the work</h2></header>
+      <div class="beyond reveal">
+        <div>
+          <h3 class="label">Languages</h3>
+          <p>English <span class="sub">— fluent, IELTS 7.0 (2023)</span></p>
+          <p>Vietnamese <span class="sub">— native</span></p>
         </div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-icon green">⚙</div>
-        <h3>Software & Tools</h3>
-        <div class="skill-list">
-          <span class="skill-pill">STM32CubeIDE</span>
-          <span class="skill-pill">Xilinx Vivado</span>
-          <span class="skill-pill">Proteus</span>
-          <span class="skill-pill">MobaXterm</span>
-          <span class="skill-pill">VMware</span>
+        <div>
+          <h3 class="label">Recognition</h3>
+          <p>Runner-up, “Sinh Viên Thế Hệ Mới”</p>
+          <p class="sub">Research on an aloe vera–based food wrap.</p>
         </div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-icon amber">🌐</div>
-        <h3>IoT & Web</h3>
-        <div class="skill-list">
-          <span class="skill-pill">MQTT</span>
-          <span class="skill-pill">WebSockets</span>
-          <span class="skill-pill">HTML/CSS/JS</span>
-          <span class="skill-pill">Chart.js</span>
-          <span class="skill-pill">ESP32</span>
-          <span class="skill-pill">AIoT Kits</span>
-        </div>
-      </div>
-
-      <div class="skill-card">
-        <div class="skill-icon rose">🖥</div>
-        <h3>Operating Systems</h3>
-        <div class="skill-list">
-          <span class="skill-pill">Linux (Ubuntu)</span>
-          <span class="skill-pill">Windows</span>
+        <div>
+          <h3 class="label">Interests</h3>
+          <p>Badminton <span class="sub">— 12 years</span></p>
+          <p>Soccer <span class="sub">— 12 years</span></p>
+          <p>Chess <span class="sub">— 1 year</span></p>
         </div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
+</main>
 
-<!-- ═══════ MORE ═══════ -->
-<section id="more">
-  <div class="container">
-    <div class="section-label">// beyond code</div>
-    <h2 class="section-title">Activities & Interests</h2>
-
-    <div class="extras-grid">
-      <div class="extra-card">
-        <h3>🏆 Award</h3>
-        <p>Runner-up at <strong>"Sinh Viên Thế Hệ Mới"</strong> competition with innovative Aloe vera food wrap research project.</p>
-      </div>
-
-      <div class="extra-card">
-        <h3>🌍 Languages</h3>
-        <p>Fluent in <strong>English</strong> (IELTS 7.0 — 2023) and <strong>Vietnamese</strong> (native).</p>
-      </div>
-
-      <div class="extra-card" style="grid-column: 1 / -1;">
-        <h3>🎯 Interests</h3>
-        <div class="interest-items">
-          <div class="interest-item">🏸 Badminton <span class="interest-years">12 yrs</span></div>
-          <div class="interest-item">⚽ Soccer <span class="interest-years">12 yrs</span></div>
-          <div class="interest-item">♟️ Chess <span class="interest-years">1 yr</span></div>
-        </div>
-      </div>
+<footer class="contact" id="contact">
+  <div class="wrap">
+    <span class="tag"><span class="dot"></span><span id="clock">Ho Chi Minh City · GMT+7</span></span>
+    <h2>Let’s build <span>something.</span></h2>
+    <p>I’m always looking for the next challenge to learn from — an internship, a project, or a conversation about IoT and embedded systems. My inbox is open.</p>
+    <div class="mail">
+      <a href="mailto:hoangleq765@gmail.com">hoangleq765@gmail.com</a>
+      <button class="btn" id="copy" type="button">Copy</button>
     </div>
-  </div>
-</section>
-
-<!-- ═══════ FOOTER ═══════ -->
-<footer>
-  <div class="container">
-    <div class="footer-links">
-      <a href="mailto:hoangleq765@gmail.com">Email</a>
-      <a href="https://github.com/NotHenryLe" target="_blank">GitHub</a>
+    <div class="links">
+      <a class="btn" href="https://github.com/NotHenryLe" target="_blank" rel="noopener">GitHub</a>
+      <a class="btn" href="Hoang-Le-Resume.pdf" download>Résumé.pdf</a>
     </div>
-    <div class="footer-copy">© 2026 Hoang Le · Built with ♥ in Ho Chi Minh City</div>
+    <div class="foot"><span>© 2026 Hoang Le</span><span>Built by hand · HTML/CSS/JS</span></div>
   </div>
 </footer>
 
+<script>
+(() => {
+  const root = document.documentElement;
+  document.getElementById('theme').addEventListener('click', () => {
+    const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+    root.dataset.theme = dark ? 'light' : 'dark';
+    try { localStorage.setItem('theme', root.dataset.theme); } catch (e) {}
+  });
+
+  const bar = document.getElementById('top');
+  addEventListener('scroll', () => bar.classList.toggle('scrolled', scrollY > 8), { passive: true });
+
+  /* Local time in Ho Chi Minh City */
+  const fmt = new Intl.DateTimeFormat('en-GB', { timeZone: 'Asia/Ho_Chi_Minh', hour: '2-digit', minute: '2-digit', hourCycle: 'h23' });
+  const clock = document.getElementById('clock');
+  const tick = () => { clock.textContent = `Ho Chi Minh City · ${fmt.format(new Date())} GMT+7`; };
+  tick(); setInterval(tick, 15000);
+
+  /* Copy email */
+  const copy = document.getElementById('copy');
+  copy.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText('hoangleq765@gmail.com'); copy.textContent = 'Copied ✓'; }
+    catch (e) { copy.textContent = 'Select ↑'; }
+    setTimeout(() => (copy.textContent = 'Copy'), 1800);
+  });
+
+  /* Reveal on scroll */
+  const els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { rootMargin: '0px 0px -8% 0px' });
+    els.forEach(el => io.observe(el));
+  } else els.forEach(el => el.classList.add('in'));
+  addEventListener('beforeprint', () => els.forEach(el => el.classList.add('in')));
+})();
+</script>
 </body>
 </html>
